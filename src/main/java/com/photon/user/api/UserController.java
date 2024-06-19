@@ -1,12 +1,11 @@
 package com.photon.user.api;
 
+import com.photon.user.dto.UserDTO;
 import com.photon.user.entity.User;
+import com.photon.user.services.UserQueryService;
 import com.photon.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -14,6 +13,9 @@ public class UserController {
 	
 	@Autowired
  private UserService userService;
+
+	@Autowired
+	private UserQueryService userQueryService;
 	
 	@PostMapping("/registration")
 	public String  userRegistration(@RequestBody User user) {
@@ -33,9 +35,12 @@ public class UserController {
 		return userService.userLogout(user);
 		
 	}
-	
-	
-	
+
+
+	@GetMapping("/{id}")
+	public UserDTO getUser(@PathVariable(name = "id") int userId) {
+		return userQueryService.fetchById(userId);
+	}
 	
 //	@PostMapping("/product")
 //	public ResponseEntity<String>  userProduct(@ModelAttribute Product user,@RequestParam("file") MultipartFile file) throws IOException {
